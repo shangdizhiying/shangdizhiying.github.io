@@ -1,43 +1,41 @@
-name: 自动部署Hexo博客
+d:
+cd \tools\github文件\my-blog
 
-on:
-  push:
-    branches: [ main ]
+# 删除旧文件
+del .github\workflows\deploy.yml
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: 检出代码
-      uses: actions/checkout@v3
-      with:
-        submodules: false  # 明确关闭子模块，因为我们手动复制了主题
-      
-    - name: 显示目录结构（诊断主题文件）
-      run: |
-        echo "=== 检查主题文件夹 ==="
-        ls -la themes/
-        echo "=== 检查Butterfly主题文件 ==="
-        ls -la themes/butterfly/
-      
-    - name: 设置Node.js环境
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: 安装Hexo CLI和依赖
-      run: |
-        npm install hexo-cli -g
-        npm install --legacy-peer-deps
-        
-    - name: 生成静态文件
-      run: |
-        hexo clean
-        hexo generate --debug
-        
-    - name: 部署到GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
+# 创建新文件
+echo name: Deploy Hexo Blog > .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo on: >> .github\workflows\deploy.yml
+echo   push: >> .github\workflows\deploy.yml
+echo     branches: [ main ] >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo jobs: >> .github\workflows\deploy.yml
+echo   build-and-deploy: >> .github\workflows\deploy.yml
+echo     runs-on: ubuntu-latest >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo     steps: >> .github\workflows\deploy.yml
+echo     - name: Checkout code >> .github\workflows\deploy.yml
+echo       uses: actions/checkout@v3 >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo     - name: Setup Node.js >> .github\workflows\deploy.yml
+echo       uses: actions/setup-node@v3 >> .github\workflows\deploy.yml
+echo       with: >> .github\workflows\deploy.yml
+echo         node-version: '18' >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo     - name: Install Hexo and dependencies >> .github\workflows\deploy.yml
+echo       run: ^| >> .github\workflows\deploy.yml
+echo         npm install hexo-cli -g^&^& >> .github\workflows\deploy.yml
+echo         npm install --legacy-peer-deps >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo     - name: Generate site >> .github\workflows\deploy.yml
+echo       run: ^| >> .github\workflows\deploy.yml
+echo         hexo clean^&^& >> .github\workflows\deploy.yml
+echo         hexo generate >> .github\workflows\deploy.yml
+echo. >> .github\workflows\deploy.yml
+echo     - name: Deploy to GitHub Pages >> .github\workflows\deploy.yml
+echo       uses: peaceiris/actions-gh-pages@v3 >> .github\workflows\deploy.yml
+echo       with: >> .github\workflows\deploy.yml
+echo         github_token: ${{ secrets.GITHUB_TOKEN }} >> .github\workflows\deploy.yml
+echo         publish_dir: ./public >> .github\workflows\deploy.yml
