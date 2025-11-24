@@ -17,10 +17,13 @@ jobs:
       with:
         node-version: '18'
         
-    - name: 安装依赖包
+    - name: 安装Hexo CLI
+      run: npm install hexo-cli -g
+        
+    - name: 安装项目依赖
       run: |
-        npm install
-        npm install hexo-cli -g
+        npm install --legacy-peer-deps
+        npm list --depth=0
         
     - name: 生成静态文件
       run: |
