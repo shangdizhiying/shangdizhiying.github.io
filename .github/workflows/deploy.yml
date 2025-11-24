@@ -11,24 +11,30 @@ jobs:
     steps:
     - name: 检出代码
       uses: actions/checkout@v3
+      with:
+        submodules: false  # 明确关闭子模块，因为我们手动复制了主题
+      
+    - name: 显示目录结构（诊断主题文件）
+      run: |
+        echo "=== 检查主题文件夹 ==="
+        ls -la themes/
+        echo "=== 检查Butterfly主题文件 ==="
+        ls -la themes/butterfly/
       
     - name: 设置Node.js环境
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         
-    - name: 安装Hexo CLI
-      run: npm install hexo-cli -g
-        
-    - name: 安装项目依赖
+    - name: 安装Hexo CLI和依赖
       run: |
+        npm install hexo-cli -g
         npm install --legacy-peer-deps
-        npm list --depth=0
         
     - name: 生成静态文件
       run: |
         hexo clean
-        hexo generate
+        hexo generate --debug
         
     - name: 部署到GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
