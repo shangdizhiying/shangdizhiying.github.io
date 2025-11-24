@@ -1,4 +1,4 @@
-name: Deploy Hexo Blog！
+name: Deploy Hexo Blog
 
 on:
   push:
@@ -15,24 +15,21 @@ jobs:
       with:
         node-version: '18'
         
-    - name: Install specific Hexo version
+    - name: Install Hexo
       run: |
-        # 清除可能的冲突依赖
-        rm -rf node_modules package-lock.json
-        # 安装兼容的Hexo版本
+        rm -rf node_modules
         npm install hexo@5.4.0 --save
         npm install --legacy-peer-deps
-        npm install hexo-cli -g
         
     - name: Build site
       run: |
         npx hexo clean
         npx hexo generate
         
-    - name: Deploy
+    - name: Deploy to Main Branch
       uses: peaceiris/actions-gh-pages@v3
       with:
-        # 关键修改：使用SSH部署密钥
         deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
         publish_dir: ./public
-        publish_branch: gh-pages
+        publish_branch: main
+        force_orphan: true
