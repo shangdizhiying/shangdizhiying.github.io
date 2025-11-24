@@ -13,17 +13,21 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # 改为Node.js 16，兼容性更好
+        node-version: '18'
         
-    - name: Install dependencies
+    - name: Install specific Hexo version
       run: |
-        npm install
+        # 清除可能的冲突依赖
+        rm -rf node_modules package-lock.json
+        # 安装兼容的Hexo版本
+        npm install hexo@5.4.0 --save
+        npm install --legacy-peer-deps
         npm install hexo-cli -g
         
     - name: Build site
       run: |
-        hexo clean
-        hexo generate
+        npx hexo clean
+        npx hexo generate
         
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
