@@ -1,0 +1,10 @@
+avatar:
+  img: /images/avatar.jpg
+  rounded: true
+  opacity: 1
+
+# Social media links
+social:
+  GitHub: https://github.com/shangdizhiying || fab fa-github
+  邮箱: mailto:test@example.com || fas fa-envelope
+  order_by: social
