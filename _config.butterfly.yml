@@ -12,8 +12,8 @@ social:
 # Valine评论系统配置
 valine:
   enable: true
-  appId: ZIszPZW5EcHVo7qHIHNvIooA-MdYXbMMI
-  appKey: M2E6rqYbGv5xQ2zf3OA1aoIT
+  appId: zYhT7FrgJSPZN7a7ItDM7Z8h-gzGzoHsz
+  appKey: 9WgNyNYFCRNyIssApCH46nv1
   placeholder: 说点什么吧～ # 评论框占位文字
   avatar: mm # 头像样式 (mm, identicon, monsterid, wavatar, retro, robohash)
   meta: [nick, mail, link] # 评论者信息
@@ -21,4 +21,3 @@ valine:
   lang: zh-cn # 语言
   visitor: true # 文章阅读量统计
   recordIP: false # 记录评论者IP
-  serverURLs: https://ziszpzw5.api.lncldglobal.com
