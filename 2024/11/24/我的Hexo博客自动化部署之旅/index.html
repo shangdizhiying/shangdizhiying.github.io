@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>我的Hexo博客自动化部署之旅 | 上帝之影的老巢</title><meta name="author" content="上帝之影"><meta name="copyright" content="上帝之影"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="# 一日成长记：我的Hexo博客自动化部署之旅 今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的**全自动部署系统**，现在坐下来记录这份喜悦和收获。 ## 🎯 今日里程碑 ### ✅ 解决顽固的SSL证书问题 - 从 SSL certificate problem: unable to get local issuer certificate 的困扰 -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的Hexo博客自动化部署之旅">
+<meta property="og:url" content="http://example.com/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/index.html">
+<meta property="og:site_name" content="上帝之影的老巢">
+<meta property="og:description" content="# 一日成长记：我的Hexo博客自动化部署之旅 今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的**全自动部署系统**，现在坐下来记录这份喜悦和收获。 ## 🎯 今日里程碑 ### ✅ 解决顽固的SSL证书问题 - 从 SSL certificate problem: unable to get local issuer certificate 的困扰 -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/avatar.jpg">
+<meta property="article:published_time" content="2024-11-24T14:00:00.000Z">
+<meta property="article:modified_time" content="2025-11-28T13:20:03.663Z">
+<meta property="article:author" content="上帝之影">
+<meta property="article:tag" content="\[Hexo, GitHub Actions, 自动化部署, 学习心得]">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "我的Hexo博客自动化部署之旅",
+  "url": "http://example.com/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/",
+  "image": "http://example.com/images/avatar.jpg",
+  "datePublished": "2024-11-24T14:00:00.000Z",
+  "dateModified": "2025-11-28T13:20:03.663Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "上帝之影",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '我的Hexo博客自动化部署之旅',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">上帝之影的老巢</span></a><a class="nav-page-title" href="/"><span class="site-name">我的Hexo博客自动化部署之旅</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">我的Hexo博客自动化部署之旅</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-24T14:00:00.000Z" title="发表于 2024-11-24 22:00:00">2024-11-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-28T13:20:03.663Z" title="更新于 2025-11-28 21:20:03">2025-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E8%B7%B5/">\[技术实践]</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p># 一日成长记：我的Hexo博客自动化部署之旅</p>
+<p>今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的**全自动部署系统**，现在坐下来记录这份喜悦和收获。</p>
+<p>## 🎯 今日里程碑</p>
+<p>### ✅ 解决顽固的SSL证书问题</p>
+<p>- 从 <code>SSL certificate problem: unable to get local issuer certificate</code> 的困扰</p>
+<p>- 到掌握SSH密钥认证的优雅解决方案</p>
+<p>- 学会了生成RSA密钥对、配置SSH代理、GitHub Deploy Keys设置</p>
+<p>### ✅ 实现GitHub Actions自动化部署</p>
+<p>- 从手动上传<code>public</code>文件夹的繁琐操作</p>
+<p>- 到现在的 <code>git push</code> 一键自动部署</p>
+<p>- 理解了CI&#x2F;CD工作流的原理和配置</p>
+<p>### ✅ 克服编码格式和语法难题</p>
+<p>- 解决了YAML文件编码问题</p>
+<p>- 学会了正确的GitHub Actions工作流配置</p>
+<p>- 掌握了问题排查的方法论</p>
+<p>## 💡 技术收获</p>
+<p>### 1. SSH深度理解</p>
+<p>- 明白了公钥&#x2F;私钥的配合机制</p>
+<p>- 学会了多环境SSH密钥管理</p>
+<p>- 理解了不同权限级别的密钥应用场景</p>
+<p>### 2. 自动化工作流理解</p>
+<p>- 掌握了GitHub Actions的基本概念</p>
+<p>- 学会了云端构建环境的配置</p>
+<p>- 理解了从代码推送到自动部署的完整流程</p>
+<p>### 3. 问题解决能力提升</p>
+<p>- 学会阅读和理解错误信息</p>
+<p>- 掌握了分步骤排查问题的思路</p>
+<p>- 从”看到错误就慌”到”有条理地分析解决”</p>
+<p>## 🌈 心路历程</p>
+<p>回想今天的学习过程，从最初的困惑到中途的挫折，再到最后的突破，每一个技术难题的解决都带来了巨大的成就感。特别是当看到GitHub Actions那个**绿色对勾**时，所有的努力都值得了！</p>
+<p>**最让我自豪的是**：</p>
+<p>- 没有在遇到SSL问题时放弃</p>
+<p>- 没有在YAML语法错误时气馁  </p>
+<p>- 没有在SSH密钥格式问题时退缩</p>
+<p>## 🚀 明日展望</p>
+<p>现在我的博客已经拥有了：</p>
+<p>- ✅ 自动构建部署系统</p>
+<p>- ✅ 稳定的访问体验</p>
+<p>- ✅ 持续集成的基础设施</p>
+<p>接下来我计划继续学习：</p>
+<p>- [ ] 评论系统集成</p>
+<p>- [ ] 访问统计配置  </p>
+<p>- [ ] 搜索功能添加</p>
+<p>- [ ] SEO优化技巧</p>
+<p>## 💫 感悟分享</p>
+<p>技术学习就像登山，过程可能艰辛，但登顶后的视野让一切付出都变得值得。今天的经历再次证明：**坚持和正确的方法能够攻克任何技术难题**。</p>
+<p>感谢在这个过程中给予我指导的AI助手，更感谢没有放弃的自己！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://example.com">上帝之影</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/">http://example.com/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://example.com" target="_blank">上帝之影的老巢</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo-GitHub-Actions-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2-%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/">\[Hexo, GitHub Actions, 自动化部署, 学习心得]</a></div><div class="post-share"><div class="social-share" data-image="/images/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/11/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" title="我的第一篇博客文章"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">我的第一篇博客文章</div></div><div class="info-2"><div class="info-item-1">欢迎来到我的博客！今天是我第一次使用Hexo搭建博客，感觉非常兴奋！ 今天的学习成果我成功完成了以下步骤： 安装环境 ✅ 安装 Node.js ✅ 安装 Hexo ✅ 创建博客项目  博客功能 ✅ 启动本地服务器 ✅ 创建第一篇文章 ✅ 学习 Markdown 语法  代码示例在搭建过程中，我使用了这些命令： hexo init my-blog - 初始化博客hexo server - 启动服务器 下一步计划 学习更多 Markdown 技巧 更换博客主题 部署到 GitHub Pages  加油！ 🎉 </div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">上帝之影</div><div class="author-info-description">这里写博客描述</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/shangdizhiying" target="_blank" title="fab fa-github"><i class="GitHub"></i></a><a class="social-icon" href="mailto:test@example.com" target="_blank" title="fas fa-envelope"><i class="邮箱"></i></a><a class="social-icon" href="/social" target="_blank" title=""><i class="order_by"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/23/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%88%90%E5%8A%9F%E4%B8%8A%E7%BA%BF%E5%95%A6%EF%BC%81/" title="从零到一：我的技术博客诞生记">从零到一：我的技术博客诞生记</a><time datetime="2025-11-23T14:45:00.000Z" title="发表于 2025-11-23 22:45:00">2025-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/Markdown-%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7%E7%BB%83%E4%B9%A0/" title="Markdown 高级技巧练习">Markdown 高级技巧练习</a><time datetime="2025-11-22T13:28:42.000Z" title="发表于 2025-11-22 21:28:42">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" title="我的第一篇博客文章">我的第一篇博客文章</a><time datetime="2025-11-22T12:00:00.000Z" title="发表于 2025-11-22 20:00:00">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/24/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85/" title="我的Hexo博客自动化部署之旅">我的Hexo博客自动化部署之旅</a><time datetime="2024-11-24T14:00:00.000Z" title="发表于 2024-11-24 22:00:00">2024-11-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By 上帝之影</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 5.4.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div><script async data-pjax src="/"></script></div></body></html>
