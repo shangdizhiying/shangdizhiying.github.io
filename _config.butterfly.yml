@@ -14,6 +14,7 @@ valine:
   enable: true
   appId: zYhT7FrgJSPZN7a7ItDM7Z8h-gzGzoHsz
   appKey: 9WgNyNYFCRNyIssApCH46nv1
+  cdn: https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js
   placeholder: 说点什么吧～ # 评论框占位文字
   avatar: mm # 头像样式 (mm, identicon, monsterid, wavatar, retro, robohash)
   meta: [nick, mail, link] # 评论者信息
