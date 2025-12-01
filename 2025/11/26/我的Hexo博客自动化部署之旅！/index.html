@@ -1,0 +1,218 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>我的Hexo博客自动化部署之旅！ | 上帝之影的老巢</title><meta name="author" content="上帝之影"><meta name="copyright" content="上帝之影"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一日成长记：我的Hexo博客自动化部署之旅今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的全自动部署系统，现在坐下来记录这份喜悦和收获。 🎯 今日里程碑✅ 解决顽固的SSL证书问题 从 SSL certificate problem: unable to get local issuer certificate 的困扰 到掌握SSH密钥认证的优雅解决方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的Hexo博客自动化部署之旅！">
+<meta property="og:url" content="https://shangdizhiying.github.io/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/index.html">
+<meta property="og:site_name" content="上帝之影的老巢">
+<meta property="og:description" content="一日成长记：我的Hexo博客自动化部署之旅今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的全自动部署系统，现在坐下来记录这份喜悦和收获。 🎯 今日里程碑✅ 解决顽固的SSL证书问题 从 SSL certificate problem: unable to get local issuer certificate 的困扰 到掌握SSH密钥认证的优雅解决方案">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shangdizhiying.github.io/images/avatar.jpg">
+<meta property="article:published_time" content="2025-11-26T14:00:00.000Z">
+<meta property="article:modified_time" content="2025-12-01T09:30:19.092Z">
+<meta property="article:author" content="上帝之影">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="GitHub Actions">
+<meta property="article:tag" content="自动化部署">
+<meta property="article:tag" content="学习心得">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shangdizhiying.github.io/images/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "我的Hexo博客自动化部署之旅！",
+  "url": "https://shangdizhiying.github.io/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/",
+  "image": "https://shangdizhiying.github.io/images/avatar.jpg",
+  "datePublished": "2025-11-26T14:00:00.000Z",
+  "dateModified": "2025-12-01T09:30:19.092Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "上帝之影",
+      "url": "https://shangdizhiying.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://shangdizhiying.github.io/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '我的Hexo博客自动化部署之旅！',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">上帝之影的老巢</span></a><a class="nav-page-title" href="/"><span class="site-name">我的Hexo博客自动化部署之旅！</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">我的Hexo博客自动化部署之旅！</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-26T14:00:00.000Z" title="发表于 2025-11-26 22:00:00">2025-11-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-01T09:30:19.092Z" title="更新于 2025-12-01 17:30:19">2025-12-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E8%B7%B5/">技术实践</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="一日成长记：我的Hexo博客自动化部署之旅"><a href="#一日成长记：我的Hexo博客自动化部署之旅" class="headerlink" title="一日成长记：我的Hexo博客自动化部署之旅"></a>一日成长记：我的Hexo博客自动化部署之旅</h1><p>今天是我技术学习路上意义非凡的一天！在这个充满挑战与成就的日子里，我终于完成了个人博客的<strong>全自动部署系统</strong>，现在坐下来记录这份喜悦和收获。</p>
+<h2 id="🎯-今日里程碑"><a href="#🎯-今日里程碑" class="headerlink" title="🎯 今日里程碑"></a>🎯 今日里程碑</h2><h3 id="✅-解决顽固的SSL证书问题"><a href="#✅-解决顽固的SSL证书问题" class="headerlink" title="✅ 解决顽固的SSL证书问题"></a>✅ 解决顽固的SSL证书问题</h3><ul>
+<li>从 <code>SSL certificate problem: unable to get local issuer certificate</code> 的困扰</li>
+<li>到掌握SSH密钥认证的优雅解决方案</li>
+<li>学会了生成RSA密钥对、配置SSH代理、GitHub Deploy Keys设置</li>
+</ul>
+<h3 id="✅-实现GitHub-Actions自动化部署"><a href="#✅-实现GitHub-Actions自动化部署" class="headerlink" title="✅ 实现GitHub Actions自动化部署"></a>✅ 实现GitHub Actions自动化部署</h3><ul>
+<li>从手动上传<code>public</code>文件夹的繁琐操作</li>
+<li>到现在的 <code>git push</code> 一键自动部署</li>
+<li>理解了CI&#x2F;CD工作流的原理和配置</li>
+</ul>
+<h3 id="✅-克服编码格式和语法难题"><a href="#✅-克服编码格式和语法难题" class="headerlink" title="✅ 克服编码格式和语法难题"></a>✅ 克服编码格式和语法难题</h3><ul>
+<li>解决了YAML文件编码问题</li>
+<li>学会了正确的GitHub Actions工作流配置</li>
+<li>掌握了问题排查的方法论</li>
+</ul>
+<h2 id="💡-技术收获"><a href="#💡-技术收获" class="headerlink" title="💡 技术收获"></a>💡 技术收获</h2><h3 id="1-SSH深度理解"><a href="#1-SSH深度理解" class="headerlink" title="1. SSH深度理解"></a>1. SSH深度理解</h3><ul>
+<li>明白了公钥&#x2F;私钥的配合机制</li>
+<li>学会了多环境SSH密钥管理</li>
+<li>理解了不同权限级别的密钥应用场景</li>
+</ul>
+<h3 id="2-自动化工作流理解"><a href="#2-自动化工作流理解" class="headerlink" title="2. 自动化工作流理解"></a>2. 自动化工作流理解</h3><ul>
+<li>掌握了GitHub Actions的基本概念</li>
+<li>学会了云端构建环境的配置</li>
+<li>理解了从代码推送到自动部署的完整流程</li>
+</ul>
+<h3 id="3-问题解决能力提升"><a href="#3-问题解决能力提升" class="headerlink" title="3. 问题解决能力提升"></a>3. 问题解决能力提升</h3><ul>
+<li>学会阅读和理解错误信息</li>
+<li>掌握了分步骤排查问题的思路</li>
+<li>从”看到错误就慌”到”有条理地分析解决”</li>
+</ul>
+<h2 id="🌈-心路历程"><a href="#🌈-心路历程" class="headerlink" title="🌈 心路历程"></a>🌈 心路历程</h2><p>回想今天的学习过程，从最初的困惑到中途的挫折，再到最后的突破，每一个技术难题的解决都带来了巨大的成就感。特别是当看到GitHub Actions那个<strong>绿色对勾</strong>时，所有的努力都值得了！</p>
+<p><strong>最让我自豪的是</strong>：</p>
+<ul>
+<li>没有在遇到SSL问题时放弃</li>
+<li>没有在YAML语法错误时气馁  </li>
+<li>没有在SSH密钥格式问题时退缩</li>
+</ul>
+<h2 id="🚀-明日展望"><a href="#🚀-明日展望" class="headerlink" title="🚀 明日展望"></a>🚀 明日展望</h2><p>现在我的博客已经拥有了：</p>
+<ul>
+<li>✅ 自动构建部署系统</li>
+<li>✅ 稳定的访问体验</li>
+<li>✅ 持续集成的基础设施</li>
+</ul>
+<p>接下来我计划继续学习：</p>
+<ul>
+<li><input disabled="" type="checkbox"> 评论系统集成</li>
+<li><input disabled="" type="checkbox"> 访问统计配置  </li>
+<li><input disabled="" type="checkbox"> 搜索功能添加</li>
+<li><input disabled="" type="checkbox"> SEO优化技巧</li>
+</ul>
+<h2 id="💫-感悟分享"><a href="#💫-感悟分享" class="headerlink" title="💫 感悟分享"></a>💫 感悟分享</h2><p>技术学习就像登山，过程可能艰辛，但登顶后的视野让一切付出都变得值得。今天的经历再次证明：<strong>坚持和正确的方法能够攻克任何技术难题</strong>。</p>
+<p>感谢在这个过程中给予我指导的AI助手，更感谢没有放弃的自己！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://shangdizhiying.github.io">上帝之影</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://shangdizhiying.github.io/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/">https://shangdizhiying.github.io/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://shangdizhiying.github.io" target="_blank">上帝之影的老巢</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Hexo/">Hexo</a><a class="post-meta__tags" href="/tags/GitHub-Actions/">GitHub Actions</a><a class="post-meta__tags" href="/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2/">自动化部署</a><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E5%BF%83%E5%BE%97/">学习心得</a></div><div class="post-share"><div class="social-share" data-image="/images/avatar.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/11/23/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%88%90%E5%8A%9F%E4%B8%8A%E7%BA%BF%E5%95%A6%EF%BC%81/" title="从零到一：我的技术博客诞生记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">从零到一：我的技术博客诞生记</div></div><div class="info-2"><div class="info-item-1">🚀 从零到一：我的技术博客诞生记 “每一个伟大的旅程都始于第一步。” —— 今天，我迈出了技术分享的第一步！  🌟 为什么创建这个博客？作为一名技术爱好者，我决定创建这个博客来：  记录学习历程：把踩过的坑和解决方案记录下来 分享知识：帮助遇到同样问题的小伙伴 自我成长：通过写作加深对技术的理解  💻 技术选型之旅经过研究，我选择了以下技术栈： 核心框架 Hexo：快速、简单的静态博客框架 Node.js：强大的JavaScript运行环境  主题与样式 Butterfly：优雅美观的主题设计 Markdown：专注内容的写作方式  部署与托管 GitHub Pages：免费的静态网站托管 Git：版本控制与协作  🛠 搭建过程回顾遇到的挑战 环境配置：Node.js 版本兼容性问题 主题安装：配置文件的正确写法 部署调试：Git 配置与权限处理  解决的成就感每当解决一个技术难题，那种”啊哈！”的瞬间都让我更加热爱编程！ 📚 已实现的功能 ✅ 个性化头像：展示独特的个人标识 ✅ 主题定制：红色系的视觉风格 ✅ 文章管理：Markdown 格式写作 ✅ 在线访问：通过 ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/11/23/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%88%90%E5%8A%9F%E4%B8%8A%E7%BA%BF%E5%95%A6%EF%BC%81/" title="从零到一：我的技术博客诞生记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-23</div><div class="info-item-2">从零到一：我的技术博客诞生记</div></div><div class="info-2"><div class="info-item-1">🚀 从零到一：我的技术博客诞生记 “每一个伟大的旅程都始于第一步。” —— 今天，我迈出了技术分享的第一步！  🌟 为什么创建这个博客？作为一名技术爱好者，我决定创建这个博客来：  记录学习历程：把踩过的坑和解决方案记录下来 分享知识：帮助遇到同样问题的小伙伴 自我成长：通过写作加深对技术的理解  💻 技术选型之旅经过研究，我选择了以下技术栈： 核心框架 Hexo：快速、简单的静态博客框架 Node.js：强大的JavaScript运行环境  主题与样式 Butterfly：优雅美观的主题设计 Markdown：专注内容的写作方式  部署与托管 GitHub Pages：免费的静态网站托管 Git：版本控制与协作  🛠 搭建过程回顾遇到的挑战 环境配置：Node.js 版本兼容性问题 主题安装：配置文件的正确写法 部署调试：Git 配置与权限处理  解决的成就感每当解决一个技术难题，那种”啊哈！”的瞬间都让我更加热爱编程！ 📚 已实现的功能 ✅ 个性化头像：展示独特的个人标识 ✅ 主题定制：红色系的视觉风格 ✅ 文章管理：Markdown 格式写作 ✅ 在线访问：通过 ...</div></div></div></a><a class="pagination-related" href="/2025/11/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" title="我的第一篇博客文章"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-22</div><div class="info-item-2">我的第一篇博客文章</div></div><div class="info-2"><div class="info-item-1">欢迎来到我的博客！今天是我第一次使用Hexo搭建博客，感觉非常兴奋！ 今天的学习成果我成功完成了以下步骤： 安装环境 ✅ 安装 Node.js ✅ 安装 Hexo ✅ 创建博客项目  博客功能 ✅ 启动本地服务器 ✅ 创建第一篇文章 ✅ 学习 Markdown 语法  代码示例在搭建过程中，我使用了这些命令： hexo init my-blog - 初始化博客hexo server - 启动服务器 下一步计划 学习更多 Markdown 技巧 更换博客主题 部署到 GitHub Pages  加油！ 🎉 </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">上帝之影</div><div class="author-info-description">这里写博客描述</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/shangdizhiying" target="_blank" title="fab fa-github"><i class="GitHub"></i></a><a class="social-icon" href="mailto:test@example.com" target="_blank" title="fas fa-envelope"><i class="邮箱"></i></a><a class="social-icon" href="/social" target="_blank" title=""><i class="order_by"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E6%97%A5%E6%88%90%E9%95%BF%E8%AE%B0%EF%BC%9A%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85"><span class="toc-number">1.</span> <span class="toc-text">一日成长记：我的Hexo博客自动化部署之旅</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%AF-%E4%BB%8A%E6%97%A5%E9%87%8C%E7%A8%8B%E7%A2%91"><span class="toc-number">1.1.</span> <span class="toc-text">🎯 今日里程碑</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E8%A7%A3%E5%86%B3%E9%A1%BD%E5%9B%BA%E7%9A%84SSL%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.1.</span> <span class="toc-text">✅ 解决顽固的SSL证书问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E5%AE%9E%E7%8E%B0GitHub-Actions%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="toc-number">1.1.2.</span> <span class="toc-text">✅ 实现GitHub Actions自动化部署</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9C%85-%E5%85%8B%E6%9C%8D%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%92%8C%E8%AF%AD%E6%B3%95%E9%9A%BE%E9%A2%98"><span class="toc-number">1.1.3.</span> <span class="toc-text">✅ 克服编码格式和语法难题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%A1-%E6%8A%80%E6%9C%AF%E6%94%B6%E8%8E%B7"><span class="toc-number">1.2.</span> <span class="toc-text">💡 技术收获</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-SSH%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. SSH深度理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%90%86%E8%A7%A3"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 自动化工作流理解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3%E8%83%BD%E5%8A%9B%E6%8F%90%E5%8D%87"><span class="toc-number">1.2.3.</span> <span class="toc-text">3. 问题解决能力提升</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8C%88-%E5%BF%83%E8%B7%AF%E5%8E%86%E7%A8%8B"><span class="toc-number">1.3.</span> <span class="toc-text">🌈 心路历程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-%E6%98%8E%E6%97%A5%E5%B1%95%E6%9C%9B"><span class="toc-number">1.4.</span> <span class="toc-text">🚀 明日展望</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%92%AB-%E6%84%9F%E6%82%9F%E5%88%86%E4%BA%AB"><span class="toc-number">1.5.</span> <span class="toc-text">💫 感悟分享</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/26/%E6%88%91%E7%9A%84Hexo%E5%8D%9A%E5%AE%A2%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E4%B9%8B%E6%97%85%EF%BC%81/" title="我的Hexo博客自动化部署之旅！">我的Hexo博客自动化部署之旅！</a><time datetime="2025-11-26T14:00:00.000Z" title="发表于 2025-11-26 22:00:00">2025-11-26</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/23/%E6%88%91%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%88%90%E5%8A%9F%E4%B8%8A%E7%BA%BF%E5%95%A6%EF%BC%81/" title="从零到一：我的技术博客诞生记">从零到一：我的技术博客诞生记</a><time datetime="2025-11-23T14:45:00.000Z" title="发表于 2025-11-23 22:45:00">2025-11-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/Markdown-%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7%E7%BB%83%E4%B9%A0/" title="Markdown 高级技巧练习">Markdown 高级技巧练习</a><time datetime="2025-11-22T13:28:42.000Z" title="发表于 2025-11-22 21:28:42">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" title="我的第一篇博客文章">我的第一篇博客文章</a><time datetime="2025-11-22T12:00:00.000Z" title="发表于 2025-11-22 20:00:00">2025-11-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By 上帝之影</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 5.4.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div><script async data-pjax src="/"></script></div></body></html>
