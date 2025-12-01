@@ -9,16 +9,19 @@ social:
   邮箱: mailto:test@example.com || fas fa-envelope
   order_by: social
 
-# Valine评论系统配置
+CDN:
+  css:
+    fontawesome: https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
+
 valine:
-  enable: true
-  appId: zYhT7FrgJSPZN7a7ItDM7Z8h-gzGzoHsz
-  appKey: 9WgNyNYFCRNyIssApCH46nv1
-  cdn: https://cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js
-  placeholder: 说点什么吧～ # 评论框占位文字
-  avatar: mm # 头像样式 (mm, identicon, monsterid, wavatar, retro, robohash)
-  meta: [nick, mail, link] # 评论者信息
-  pageSize: 10 # 每页评论数量
-  lang: zh-cn # 语言
-  visitor: true # 文章阅读量统计
-  recordIP: false # 记录评论者IP
+  enable: false
+  #appId: zYhT7FrgJSPZN7a7ItDM7Z8h-gzGzoHsz
+  #appKey: 9WgNyNYFCRNyIssApCH46nv1
+  #cdn: /js/Valine.min.js
+  #placeholder: 说点什么吧～
+  #avatar: mm
+  #meta: [nick, mail, link]
+  #pageSize: 10
+  #lang: zh-cn
+  #visitor: true
+  #recordIP: false
